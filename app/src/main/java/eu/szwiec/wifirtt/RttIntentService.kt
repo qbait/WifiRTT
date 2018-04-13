@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 
 
-class RttIntentService : IntentService("Cashback IntentService") {
+class RttIntentService : IntentService("wifiRttService") {
 
     companion object {
         val result = MutableLiveData<String>()
