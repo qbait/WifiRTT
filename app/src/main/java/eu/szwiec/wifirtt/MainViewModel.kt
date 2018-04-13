@@ -20,6 +20,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             getApplication<Application>().stopService(serviceIntent)
             isScanning = false
         } else {
+            allResults.value = ""
             getApplication<Application>().startService(serviceIntent)
             isScanning = true
         }

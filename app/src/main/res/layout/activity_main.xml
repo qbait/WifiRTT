@@ -16,13 +16,6 @@
         android:layout_margin="16dp"
         tools:context="eu.szwiec.wifirtt.MainActivity">
 
-        <TextView
-            android:id="@+id/allResults"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.allResults}"
-            />
-
         <ToggleButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,5 +23,12 @@
             android:checked="@{viewModel.isScanning}"
             android:textOff="Scan"
             android:textOn="Stop" />
+
+        <TextView
+            android:id="@+id/allResults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.allResults}"
+            />
     </LinearLayout>
 </layout>
