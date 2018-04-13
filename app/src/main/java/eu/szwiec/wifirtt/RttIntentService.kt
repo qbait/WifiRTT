@@ -1,10 +1,15 @@
 package eu.szwiec.wifirtt
 
 import android.app.IntentService
+import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 
 
 class RttIntentService : IntentService("Cashback IntentService") {
+
+    companion object {
+        val result = MutableLiveData<String>()
+    }
 
     var isRunning = true
 
@@ -14,16 +19,9 @@ class RttIntentService : IntentService("Cashback IntentService") {
 
     private fun sendCashbackInfoToClient() {
         while (isRunning) {
-            val intent = Intent()
-            intent.action = RESULT
-            intent.putExtra("result", "xxx")
-            sendBroadcast(intent)
+            result.postValue("xxx")
             Thread.sleep(3000)
         }
-    }
-
-    companion object {
-        internal val RESULT = "result"
     }
 
     override fun onDestroy() {
