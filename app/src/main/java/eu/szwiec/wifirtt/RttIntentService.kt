@@ -25,6 +25,7 @@ class RttIntentService : IntentService("wifiRttService") {
 
     companion object {
         val result = MutableLiveData<List<String>>()
+        var isRunning = NonNullLiveData(false)
     }
 
     private val wifiManager by lazy { getSystemService(WifiManager::class.java) }
@@ -41,7 +42,7 @@ class RttIntentService : IntentService("wifiRttService") {
 
                         rttManager.startRanging(rangingRequest, object : RangingResultCallback() {
                             override fun onRangingResults(results: MutableList<RangingResult>) {
-                                if (isRunning) {
+                                if (isRunning.value) {
                                     wifiManager.startScan()
                                 }
 
@@ -65,25 +66,24 @@ class RttIntentService : IntentService("wifiRttService") {
         }
     }
 
-    var isRunning = true
-
     override fun onCreate() {
         super.onCreate()
         registerReceiver(receiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
     }
 
     override fun onHandleIntent(intent: Intent?) {
+        isRunning.postValue(true)
         startForeground()
         wifiManager.startScan()
 
-        while (isRunning) {
+        while (isRunning.value) {
             Thread.sleep(3000)
         }
     }
 
     override fun onDestroy() {
         stopForeground(true)
-        isRunning = false
+        isRunning.postValue(false)
         unregisterReceiver(receiver)
         super.onDestroy()
     }

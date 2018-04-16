@@ -7,8 +7,8 @@ import android.content.Intent
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     val allResults = NonNullLiveData("")
     val serviceIntent = Intent(getApplication(), RttIntentService::class.java)
-    var isScanning = false
     var isPemissionGranted = NonNullLiveData(false)
+    var isServiceRunning = RttIntentService.isRunning
 
     init {
         RttIntentService.result.observeForever({ result ->
@@ -19,13 +19,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun toggleScan() {
-        if (isScanning) {
+        if (isServiceRunning.value) {
             getApplication<Application>().stopService(serviceIntent)
-            isScanning = false
         } else {
             allResults.value = ""
             getApplication<Application>().startService(serviceIntent)
-            isScanning = true
         }
     }
 }
