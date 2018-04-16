@@ -19,7 +19,7 @@ import android.os.IBinder
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 
-class RttIntentService : Service() {
+class RttService : Service() {
 
     fun <T> MutableList<T>.takeMax(max: Int) = this.subList(0, minOf(size, max))
 

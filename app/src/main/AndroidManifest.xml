@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".RttIntentService"/>
+        <service android:name=".RttService"/>
     </application>
 
 </manifest>

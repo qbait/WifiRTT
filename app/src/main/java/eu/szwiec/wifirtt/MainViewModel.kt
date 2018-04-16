@@ -10,10 +10,10 @@ import java.io.File
 import java.time.LocalDateTime
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    val serviceIntent = Intent(getApplication(), RttIntentService::class.java)
+    val serviceIntent = Intent(getApplication(), RttService::class.java)
     var isPemissionGranted = NonNullLiveData(false)
-    var isServiceRunning = RttIntentService.isRunning
-    val allResults = Transformations.map(RttIntentService.result, { result -> result.joinToString(separator = "\n") })
+    var isServiceRunning = RttService.isRunning
+    val allResults = Transformations.map(RttService.result, { result -> result.joinToString(separator = "\n") })
 
     fun toggleScan() {
         if (isServiceRunning.value) {
