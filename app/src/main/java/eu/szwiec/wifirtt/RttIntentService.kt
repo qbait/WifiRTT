@@ -71,6 +71,7 @@ class RttIntentService : IntentService("wifiRttService") {
     }
 
     override fun onHandleIntent(intent: Intent?) {
+        result.postValue(mutableListOf())
         isRunning.postValue(true)
         startForeground()
         wifiManager.startScan()
