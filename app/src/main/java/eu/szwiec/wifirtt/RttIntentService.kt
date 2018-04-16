@@ -4,7 +4,6 @@ import android.app.IntentService
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.arch.lifecycle.MutableLiveData
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -24,7 +23,7 @@ class RttIntentService : IntentService("wifiRttService") {
     fun <T> MutableList<T>.takeMax(max: Int) = this.subList(0, minOf(size, max))
 
     companion object {
-        val result = MutableLiveData<List<String>>()
+        val result = NonNullLiveData<MutableList<String>>(mutableListOf())
         var isRunning = NonNullLiveData(false)
     }
 
@@ -46,7 +45,7 @@ class RttIntentService : IntentService("wifiRttService") {
                                     wifiManager.startScan()
                                 }
 
-                                var list = mutableListOf<String>()
+                                var list = result.value
                                 results
                                         .filter { it.status == RangingResult.STATUS_SUCCESS }
                                         .forEach {
@@ -96,7 +95,7 @@ class RttIntentService : IntentService("wifiRttService") {
                     ""
                 }
 
-        val notificationBuilder = NotificationCompat.Builder(this, channelId )
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
         val notification = notificationBuilder.setOngoing(true)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setCategory(Notification.CATEGORY_SERVICE)
@@ -104,9 +103,8 @@ class RttIntentService : IntentService("wifiRttService") {
         startForeground(101, notification)
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(): String{
+    private fun createNotificationChannel(): String {
         val channelId = "my_service"
         val channelName = "My Background Service"
         val chan = NotificationChannel(channelId,

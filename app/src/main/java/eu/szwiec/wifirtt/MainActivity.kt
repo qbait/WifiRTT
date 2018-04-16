@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
-        if(perms.size == LOCATION_AND_WRITE.size) {
+        if (perms.size == LOCATION_AND_WRITE.size) {
             viewModel.isPemissionGranted.value = true
         }
     }
