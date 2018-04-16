@@ -21,21 +21,13 @@ class RttIntentService : IntentService("wifiRttService") {
         val result = MutableLiveData<List<String>>()
     }
 
-    lateinit var mWifiManager: WifiManager
+    private val wifiManager by lazy { getSystemService(WifiManager::class.java) }
+    private val rttManager by lazy { getSystemService(WifiRttManager::class.java) as WifiRttManager }
 
-    private lateinit var receiver: BroadcastReceiver
-
-    var isRunning = true
-
-    override fun onCreate() {
-        super.onCreate()
-
-        mWifiManager = getSystemService(WifiManager::class.java)
-        val rttManager = getSystemService(WifiRttManager::class.java) as WifiRttManager
-
-        receiver =  object : BroadcastReceiver() {
+    private val receiver by lazy {
+        object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                with(mWifiManager.scanResults) {
+                with(wifiManager.scanResults) {
                     if (size > 0) {
                         val rangingRequest = RangingRequest.Builder()
                                 .addAccessPoints(takeMax(RangingRequest.getMaxPeers()))
@@ -44,7 +36,7 @@ class RttIntentService : IntentService("wifiRttService") {
                         rttManager.startRanging(rangingRequest, object : RangingResultCallback() {
                             override fun onRangingResults(results: MutableList<RangingResult>) {
                                 if (isRunning) {
-                                    mWifiManager.startScan()
+                                    wifiManager.startScan()
                                 }
 
                                 var list = mutableListOf<String>()
@@ -64,14 +56,18 @@ class RttIntentService : IntentService("wifiRttService") {
                     }
                 }
             }
-
         }
+    }
 
+    var isRunning = true
+
+    override fun onCreate() {
+        super.onCreate()
         registerReceiver(receiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
     }
 
     override fun onHandleIntent(intent: Intent?) {
-        mWifiManager.startScan()
+        wifiManager.startScan()
 
         while (isRunning) {
             Thread.sleep(3000)
