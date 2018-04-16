@@ -1,9 +1,9 @@
 package eu.szwiec.wifirtt
 
-import android.app.IntentService
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,10 +15,11 @@ import android.net.wifi.rtt.RangingResult
 import android.net.wifi.rtt.RangingResultCallback
 import android.net.wifi.rtt.WifiRttManager
 import android.os.Build
+import android.os.IBinder
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 
-class RttIntentService : IntentService("wifiRttService") {
+class RttIntentService : Service() {
 
     fun <T> MutableList<T>.takeMax(max: Int) = this.subList(0, minOf(size, max))
 
@@ -70,15 +71,13 @@ class RttIntentService : IntentService("wifiRttService") {
         registerReceiver(receiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
     }
 
-    override fun onHandleIntent(intent: Intent?) {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         result.postValue(mutableListOf())
         isRunning.postValue(true)
         startForeground()
         wifiManager.startScan()
 
-        while (isRunning.value) {
-            Thread.sleep(3000)
-        }
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
@@ -115,5 +114,9 @@ class RttIntentService : IntentService("wifiRttService") {
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(chan)
         return channelId
+    }
+
+    override fun onBind(p0: Intent?): IBinder? {
+        return null
     }
 }
