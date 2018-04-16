@@ -29,6 +29,14 @@
                 android:textOff="Scan"
                 android:textOn="Stop" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:enabled="@{viewModel.pemissionGranted}"
+                android:onClick="@{() -> viewModel.saveOnSdCard()}"
+                android:text="Save on SD Card"/>
+
             <TextView
                 android:id="@+id/allResults"
                 android:layout_width="wrap_content"
