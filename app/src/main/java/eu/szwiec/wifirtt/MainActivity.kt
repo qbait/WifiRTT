@@ -17,14 +17,14 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requestLocationAndWritePermissions()
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.let {
             it.viewModel = viewModel
             it.setLifecycleOwner(this)
         }
+
+        requestLocationAndWritePermissions()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -40,17 +40,19 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     fun requestLocationAndWritePermissions() {
         if (!hasLocationAndContactsPermissions()) {
             EasyPermissions.requestPermissions(this, "This App needs location and storage to write data", RC_LOCATION_WRITE_PERM, *LOCATION_AND_WRITE)
+        } else {
+            viewModel.isPemissionGranted.value = true
         }
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
-//        scanButton.isEnabled = true
-//        saveButton.isEnabled = true
+        if(perms.size == LOCATION_AND_WRITE.size) {
+            viewModel.isPemissionGranted.value = true
+        }
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-//        scanButton.isEnabled = false
-//        saveButton.isEnabled = false
+        viewModel.isPemissionGranted.value = false
     }
 }
 

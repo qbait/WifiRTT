@@ -23,7 +23,7 @@
             <ToggleButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="@{viewModel.isScanning}"
+                android:enabled="@{viewModel.pemissionGranted}"
                 android:onClick="@{() -> viewModel.toggleScan()}"
                 android:textOff="Scan"
                 android:textOn="Stop" />

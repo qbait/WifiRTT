@@ -8,6 +8,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val allResults = NonNullLiveData("")
     val serviceIntent = Intent(getApplication(), RttIntentService::class.java)
     var isScanning = false
+    var isPemissionGranted = NonNullLiveData(false)
 
     init {
         RttIntentService.result.observeForever({ result ->
