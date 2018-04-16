@@ -11,7 +11,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         RttIntentService.result.observeForever({ result ->
-            allResults.value = allResults.value + "\n" + result
+            if(result != null && result.size!=0)  {
+                allResults.value = allResults.value + "\n" + result.joinToString(separator = "\n")
+            }
         })
     }
 

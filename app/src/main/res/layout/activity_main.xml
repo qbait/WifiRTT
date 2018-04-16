@@ -8,27 +8,33 @@
             type="eu.szwiec.wifirtt.MainViewModel" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/activity_intent_service"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="16dp"
         tools:context="eu.szwiec.wifirtt.MainActivity">
 
-        <ToggleButton
+        <LinearLayout
+            android:id="@+id/activity_intent_service"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.toggleScan()}"
-            android:checked="@{viewModel.isScanning}"
-            android:textOff="Scan"
-            android:textOn="Stop" />
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/allResults"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.allResults}"
-            />
-    </LinearLayout>
+            <ToggleButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@{viewModel.isScanning}"
+                android:onClick="@{() -> viewModel.toggleScan()}"
+                android:textOff="Scan"
+                android:textOn="Stop" />
+
+            <TextView
+                android:id="@+id/allResults"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.allResults}" />
+        </LinearLayout>
+
+    </ScrollView>
+
 </layout>
