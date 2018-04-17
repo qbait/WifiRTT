@@ -50,7 +50,7 @@ class RttService : Service() {
                                 results
                                         .filter { it.status == RangingResult.STATUS_SUCCESS }
                                         .forEach {
-                                            list.add("${it.rangingTimestampUs},${it.macAddress},${it.distanceMm},${it.distanceStdDevMm},${it.rssi}")
+                                            list.add("${it.rangingTimestampUs},${it.macAddress},${it.distanceMm},${it.distanceStdDevMm},${it.rssi},${it.reportedLocationConfigurationInformation}")
                                         }
                                 result.postValue(list)
                             }
